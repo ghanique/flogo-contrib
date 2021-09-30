@@ -1,4 +1,4 @@
-package rest
+package ghrest
 
 import (
 	"bytes"
