@@ -1,4 +1,4 @@
-package ghrest
+package rest2
 
 import (
 	"bytes"
