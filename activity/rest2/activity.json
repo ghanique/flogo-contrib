@@ -1,11 +1,11 @@
 {
   "name": "ghanique-rest",
   "type": "flogo:activity",
-  "ref": "github.com/ghanique/flogo-contrib/activity/rest",
+  "ref": "github.com/ghanique/flogo-contrib/activity/rest2",
   "version": "0.0.2",
   "title": "REST GH",
   "description": "Simple REST Activity",
-  "homepage": "https://github.com/ghanique/flogo-contrib/tree/master/activity/rest",
+  "homepage": "https://github.com/ghanique/flogo-contrib/tree/master/activity/rest2",
   "input":[
     {
       "name": "method",
