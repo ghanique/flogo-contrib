@@ -1,11 +1,11 @@
 {
-  "name": "tibco-rest",
+  "name": "ghanique-rest",
   "type": "flogo:activity",
-  "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/rest",
-  "version": "0.0.1",
-  "title": "Invoke REST Service",
+  "ref": "github.com/ghanique/flogo-contrib/activity/rest",
+  "version": "0.0.2",
+  "title": "REST GH",
   "description": "Simple REST Activity",
-  "homepage": "https://github.com/TIBCOSoftware/flogo-contrib/tree/master/activity/rest",
+  "homepage": "https://github.com/ghanique/flogo-contrib/tree/master/activity/rest",
   "input":[
     {
       "name": "method",
