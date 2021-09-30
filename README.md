@@ -1,61 +1,122 @@
-**This repository has been replaced with Project Flogo [0.9.0 Contrib](https://github.com/project-flogo/contrib). Project Flogo 0.5.8 (this repository) will be placed in maintaince mode and only critical issues fixed.**
+---
+title: REST
+weight: 4618
+---
 
-# flogo-contrib
-
-[![Build Status](https://travis-ci.org/TIBCOSoftware/flogo-contrib.svg?branch=master)](https://travis-ci.org/TIBCOSoftware/flogo-contrib.svg?branch=master)
-
-Collection of Flogo activities, triggers and models.
-
-## Contributions
-
-### Activities
-* [awsiot](activity/awsiot): Aws IOT shadow update
-* [coap](activity/coap): CoAP messaging 
-* [counter](activity/counter): Global counter  
-* [log](activity/log): Simple flow Logger 
-* [rest](activity/rest): Simple REST invoker
-* [twilio](activity/twilio): Simple Twilio SMS sender
-* [websocket] (activity/wsmessage): Simple Websocket Message
-
-### Triggers
-* [coap](trigger/coap): Start flow via CoAP
-* [mqtt](trigger/mqtt): Start flow via MQTT
-* [rest](trigger/rest): Start flow via REST
-* [timer](trigger/timer): Start flow via Timer
- 
-### Models
-* [simple](model/simple): Basic flow model
+# REST
+This activity allows you to invoke a REST service.
 
 ## Installation
-
-#### Install Activity
-Example: install **log** activity
-
+### Flogo Web
+This activity comes out of the box with the Flogo Web UI
+### Flogo CLI
 ```bash
-flogo install github.com/TIBCOSoftware/flogo-contrib/activity/log
-```
-#### Install Trigger
-Example: install **rest** trigger
-
-```bash
-flogo install github.com/TIBCOSoftware/flogo-contrib/trigger/rest
-```
-#### Install Model
-Example: install **simple** model
-
-```bash
-flogo install github.com/TIBCOSoftware/flogo-contrib/model/simple
+flogo add activity github.com/TIBCOSoftware/flogo-contrib/activity/rest
 ```
 
-## Contributing and support
+## Schema
+Inputs and Outputs:
 
-### Contributing
+```json
+{
+  "input":[
+    {
+      "name": "method",
+      "type": "string",
+      "required": true,
+      "allowed" : ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    },
+    {
+      "name": "uri",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "proxy",
+      "type": "string",
+      "required": false
+    },
+    {
+      "name": "pathParams",
+      "type": "params"
+    },
+    {
+      "name": "queryParams",
+      "type": "params"
+    },
+    {
+      "name": "header",
+      "type": "params"
+    },
+    {
+      "name": "skipSsl",
+      "type": "boolean",
+      "value": "false"
+    },
+    {
+      "name": "content",
+      "type": "any"
+    }
+  ],
+  "output": [
+    {
+      "name": "result",
+      "type": "any"
+    },
+    {
+      "name": "status",
+      "type": "integer"
+    }
+  ]
+}
+```
+## Settings
+| Setting     | Required | Description |
+|:------------|:---------|:------------|
+| method      | True     | The HTTP method to invoke (Allowed values are GET, POST, PUT, DELETE, and PATCH) |         
+| uri         | True     | The URI of the service to invoke |
+| proxy       | False    | The address of the proxy server to be used |
+| pathParams  | False    | The path parameters. This field is only required if you have params in your URI (for example http://.../pet/:id) |
+| queryParams | False    | The query parameters |
+| header      | False    | The header parameters |
+| skipSsl     | False    | If set to true, skips the SSL validation (defaults to false)
+| content     | False    | The message content you want to send. This field is only used in POST, PUT, and PATCH |
 
-New activites, triggers and models are welcomed. If you would like to contribute, please following the [contribution guidelines](https://github.com/TIBCOSoftware/flogo/blob/master/CONTRIBUTING.md). If you have any questions, issues, etc feel free to chat with us on [Gitter](https://gitter.im/project-flogo/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link).
 
-## License
-flogo-contrib is licensed under a BSD-type license. See TIBCO LICENSE.txt for license text.
+## Examples
+### Simple
+The below example retrieves a pet with number '1234' from the [swagger petstore](http://petstore.swagger.io):
 
-### Support
-For Q&A you can post your questions on [Gitter](https://gitter.im/project-flogo/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
+```json
+{
+  "id": "rest_2",
+  "name": "Invoke REST Service",
+  "description": "Simple REST Activity",
+  "activity": {
+    "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/rest",
+    "input": {
+      "method": "GET",
+      "uri": "http://petstore.swagger.io/v2/pet/1234"
+    }
+  }
+}
+```
 
+### Using Path Params
+The below example is the same as above, itretrieves a pet with number '1234' from the [swagger petstore](http://petstore.swagger.io), but uses a URI parameter to configure the ID:
+
+```json
+{
+  "id": "rest_2",
+  "name": "Invoke REST Service",
+  "description": "Simple REST Activity",
+  "activity": {
+    "ref": "github.com/TIBCOSoftware/flogo-contrib/activity/rest",
+    "input": {
+      "method": "GET",
+      "uri": "http://petstore.swagger.io/v2/pet/:id",
+      "params": { "id": "1234"}
+    }
+  }
+}
+```
